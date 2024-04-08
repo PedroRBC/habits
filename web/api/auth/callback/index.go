@@ -38,7 +38,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = fireApp.GetAccount(user.Id, provider)
-	if err == nil {
+	if err != nil {
 		account := &models.Account{
 			UserId:   user.Id,
 			Provider: provider,
