@@ -19,7 +19,7 @@ export function AuthProvider() {
         `${window.location.pathname}?${params}`,
       );
     }
-  }, [token]);
+  }, [token, searchParams]);
 
   return null;
 }
