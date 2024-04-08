@@ -45,7 +45,7 @@ func New() fireBase {
 
 /* GetUserByEmail retrieves a user from Firestore by email */
 func (f *fireBase) GetUserByEmail(email string) (*models.User, error) {
-	doc, err := f.Store.Collection("users").Where("Email", "==", email).Documents(ctx).Next()
+	doc, err := f.Store.Collection("users").Where("email", "==", email).Documents(ctx).Next()
 	if err != nil {
 		return nil, err
 	}
