@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/home/node/app
+      - /home/pedro/.local/share/com.vercel.cli:/root/.local/share/com.vercel.cli

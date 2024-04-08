@@ -1,0 +1,19 @@
+{
+    "env": {
+        "GO_BUILD_FLAGS": "-buildvcs=false -ldflags '-s -w'"
+    },
+    "rewrites": [
+        {
+            "source": "/api/auth/:provider/callback",
+            "destination": "/api/auth/callback"
+        },
+        {
+            "source": "/api/auth/logout/:provider",
+            "destination": "/api/auth/logout"
+        },
+        {
+            "source": "/api/auth/:provider",
+            "destination": "/api/auth/provider"
+        }
+    ]
+  }
