@@ -9,7 +9,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func UserInfo(w http.ResponseWriter, r *http.Request) {
+	err := lib.SetMethod(w, r, "GET")
+	if err != nil {
+		return
+	}
+
 	token, err := lib.ProtectRoute(w, r)
 	if err != nil {
 		return
