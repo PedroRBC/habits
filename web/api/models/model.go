@@ -1,6 +1,8 @@
 package models
 
-import "github.com/golang-jwt/jwt/v5"
+import (
+	"time"
+)
 
 type (
 	User struct {
@@ -17,8 +19,34 @@ type (
 		Provider string `firestore:"provider"`
 	}
 
-	Token struct {
-		UserId string `json:"userId"`
-		jwt.Claims
+	Summary struct {
+		Id 	string `json:"id"`
+		Date time.Time `json:"date"`
+		Amount int	`json:"amount"`
+		Completed int	`json:"completed"`
 	}
+
+	Habit struct {
+		Id          string `firestore:"-" json:"id"`
+		AvaliableDays []int `firestore:"avaliable_days" json:"avaliableDays"`
+		CreatedAt	time.Time `firestore:"created_at" json:"createdAt"`
+		Title 	 string `firestore:"title" json:"title"`
+	}
+
+	MarkedDate struct {
+		Id string `firestore:"-"`
+		Date time.Time `firestore:"date"`
+		Amount []string `firestore:"amount"`
+		Completed []string `firestore:"completed"`
+	}
+)
+
+
+type (
+
+	CreateHabitRequest struct {
+		Title string `json:"title"`
+		WeekDays []int `json:"weekDays"`
+	}
+
 )
