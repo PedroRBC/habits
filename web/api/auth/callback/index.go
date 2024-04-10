@@ -7,6 +7,7 @@ import (
 	"habits-app-go/api/lib"
 	"habits-app-go/api/models"
 	"net/http"
+	"time"
 
 	"github.com/markbates/goth/gothic"
 )
@@ -56,6 +57,13 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/?token=%s", token), http.StatusFound)
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   token,
+		Expires: time.Now().Add(time.Hour * 24 * 7),
+		Secure: true,
+	})
+	
+	http.Redirect(w, r, "/", http.StatusFound)
 
 }
