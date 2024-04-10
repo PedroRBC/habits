@@ -6,10 +6,10 @@ import (
 
 type (
 	User struct {
-		Id        string `firestore:"id"`
-		Email     string `firestore:"email"`
-		AvatarUrl string `firestore:"avatarUrl"`
-		Name      string `firestore:"name"`
+		Id        string `firestore:"id" json:"id"`
+		Email     string `firestore:"email" json:"email"`
+		AvatarUrl string `firestore:"avatarUrl" json:"avatarUrl"`
+		Name      string `firestore:"name" json:"name"`
 	}
 
 	Account struct {
