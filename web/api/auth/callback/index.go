@@ -62,6 +62,8 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		Value:   token,
 		Expires: time.Now().Add(time.Hour * 24 * 7),
 		Secure: true,
+		Path: "/",
+		HttpOnly: false,
 	})
 	
 	http.Redirect(w, r, "/", http.StatusFound)

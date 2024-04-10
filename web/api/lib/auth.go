@@ -35,6 +35,6 @@ func StartGoth() {
 	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
 
 	goth.UseProviders(
-		google.New(googleClientId, googleClientSecret, hostname+"/api/auth/google/callback", "profile"),
+		google.New(googleClientId, googleClientSecret, hostname+"/api/auth/google/callback", "profile", "email"),
 	)
 }
