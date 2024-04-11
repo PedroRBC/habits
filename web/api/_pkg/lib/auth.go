@@ -18,7 +18,7 @@ var (
 )
 
 func init() {
-	if os.Getenv("NEXT_PUBLIC_VERCEL_ENV") == "production" {
+	if os.Getenv("NODE_ENV") == "production" {
 		hostname = "https://habits.pedrorbc.com"
 	}
 
