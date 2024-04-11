@@ -2,7 +2,7 @@ package handler
 
 import (
 	"context"
-	"habits-app-go/api/lib"
+	"habits-app-go/api/_pkg/lib"
 	"net/http"
 
 	"github.com/markbates/goth/gothic"

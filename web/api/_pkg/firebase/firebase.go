@@ -3,7 +3,7 @@ package firebase
 import (
 	"context"
 	"fmt"
-	"habits-app-go/api/models"
+	"habits-app-go/api/_pkg/models"
 	"log"
 	"os"
 

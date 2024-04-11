@@ -2,9 +2,9 @@ package handler
 
 import (
 	"encoding/json"
-	"habits-app-go/api/firebase"
-	"habits-app-go/api/lib"
-	"habits-app-go/api/models"
+	"habits-app-go/api/_pkg/firebase"
+	"habits-app-go/api/_pkg/lib"
+	"habits-app-go/api/_pkg/models"
 	"net/http"
 
 	"github.com/golang-jwt/jwt/v5"
