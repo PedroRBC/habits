@@ -1,6 +1,6 @@
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "./ThemeProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "./AuthProvider";
 import { ReduxProvider } from "./ReduxProvider";
 
@@ -14,7 +14,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <AuthProvider />
       </ReduxProvider>
       <TailwindIndicator />
-      <SpeedInsights />
+      <Analytics />
     </ThemeProvider>
   );
 }
