@@ -13,12 +13,12 @@ var (
 	store  = sessions.NewCookieStore([]byte(os.Getenv("SESSION_SECRET")))
 	maxAge = 86400 * 30
 	// NODE_ENV because are using vercel to deploy our app
-	isProd   = os.Getenv("NODE_ENV") == "production" || false
+	isProd   = os.Getenv("GO_MODE_ENV") == "production" || false
 	hostname = "http://localhost:3000"
 )
 
 func init() {
-	if os.Getenv("NODE_ENV") == "production" {
+	if os.Getenv("GO_MODE_ENV") == "production" {
 		hostname = "https://habits.pedrorbc.com"
 	}
 
