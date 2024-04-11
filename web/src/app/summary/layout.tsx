@@ -10,11 +10,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const { logged, loading } = useAppSelector((state) => state.auth);
-  if (!loading && !logged) {
-    router.push("/");
-  } else if (loading) {
+  const { status } = useAppSelector((state) => state.auth);
+  if (status === "loading") {
     return null;
+  } else if (status === "unlogged") {
+    router.push("/");
+  } else {
+    return children;
   }
-  return children;
 }

@@ -3,10 +3,11 @@
 import { User } from "@/models/user";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+type Status = "loading" | "logged" | "unlogged";
+
 interface authState {
   user: User;
-  logged: boolean;
-  loading: boolean;
+  status: Status;
 }
 
 const initialState: authState = {
@@ -16,8 +17,7 @@ const initialState: authState = {
     email: "",
     avatarUrl: "",
   },
-  logged: false,
-  loading: true,
+  status: "loading",
 };
 
 export const providersSlice = createSlice({
@@ -26,11 +26,10 @@ export const providersSlice = createSlice({
   reducers: {
     setUser: (state, { payload }: PayloadAction<User>) => {
       state.user = payload;
-      state.logged = true;
-      state.loading = false;
+      state.status = "logged";
     },
     logout: (state) => {
-      state.logged = false;
+      state.status = "unlogged";
     },
   },
 });
