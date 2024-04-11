@@ -237,7 +237,7 @@ func (f *fireBase) CreateHabit(UserId string, Habit models.CreateHabitRequest) (
 		CreatedAt: carbon.SetTimezone(carbon.SaoPaulo).Now().StartOfDay().StdTime(),
 	}
 
-	_, _, err := f.Store.Collection("users").Doc(UserId).Collection("habits").Add(ctx, habit)
+	habitRef, _, err := f.Store.Collection("users").Doc(UserId).Collection("habits").Add(ctx, habit)
 	if err != nil {
 		fmt.Println(err)
 		return fmt.Errorf("failed to create habit in Firestore")
@@ -249,10 +249,13 @@ func (f *fireBase) CreateHabit(UserId string, Habit models.CreateHabitRequest) (
 	if err != nil {
 		return nil
 	} else {
-		var markedDate models.MarkedDate
+		markedDate := models.MarkedDate{
+			Completed: []string{},
+			Amount: []string{},
+		}
 		markedDateSnap.DataTo(&markedDate)
 		
-		markedDate.Amount = append(markedDate.Amount, habit.Id)
+		markedDate.Amount = append(markedDate.Amount, habitRef.ID)
 
 		_, err = markedDateRef.Set(ctx, markedDate)
 		if err != nil {
