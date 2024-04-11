@@ -3,6 +3,7 @@
 import dayjs from "dayjs";
 import { generateRangeDatesFromYearStart } from "@/lib/generate-dates";
 import { HabitDay } from "./habit-day";
+import { useIsReduced } from "@/lib/useReduced";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -18,6 +19,7 @@ export type Summary = {
 }[];
 
 export function SummaryTable({ summary }: { summary: Summary }) {
+  const useReducedRange = useIsReduced();
   return (
     <div className="w-full flex flex-col lg:flex-row">
       <div className="grid grid-cols-7 lg:grid-cols-none lg:grid-rows-7 grid-flow-row gap-3">
@@ -35,12 +37,12 @@ export function SummaryTable({ summary }: { summary: Summary }) {
 
       <div className="grid grid-cols-7 lg:grid-cols-none lg:grid-rows-7 grid-flow-row lg:grid-flow-col gap-3">
         {summary.length > 0 &&
-          summaryDates.map((date) => {
+          summaryDates.map((date, i) => {
             const dayInSummary = summary.find((day) => {
               return dayjs(date).isSame(day.date, "day");
             });
-            if (dayjs(date).isSame(dayjs(), "day")) {
-              console.log(dayInSummary);
+            if (useReducedRange && i <= 7 * 8 - 1) {
+              return null;
             }
             return (
               <HabitDay
