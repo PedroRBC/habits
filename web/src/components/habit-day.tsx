@@ -9,9 +9,9 @@ import {
 import dayjs from "dayjs";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ProgressBar } from "./progress-bar";
+import { Progress } from "@/components/ui/progress";
 import { HabitsList } from "./habits-list";
-
+import "@/lib/dayjs";
 interface HabitDayProps {
   defaultCompleted?: number;
   amount?: number;
@@ -39,18 +39,20 @@ export function HabitDay({
       <PopoverTrigger
         className={cn(
           "w-10 h-10 border-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-bg",
-          {
-            "bg-zinc-900 border-zinc-800": HabitProgress === 0,
-            "bg-violet-900 border-violet-700":
-              HabitProgress > 0 && HabitProgress < 20,
-            "bg-violet-800 border-violet-600":
-              HabitProgress >= 20 && HabitProgress < 40,
-            "bg-violet-700 border-violet-500":
-              HabitProgress >= 40 && HabitProgress < 60,
-            "bg-violet-600 border-violet-500":
-              HabitProgress >= 60 && HabitProgress < 80,
-            "bg-violet-500 border-violet-400": HabitProgress >= 80,
-          },
+          HabitProgress === 0 && "bg-zinc-900 border-zinc-800",
+          HabitProgress > 0 &&
+            HabitProgress < 20 &&
+            " bg-violet-500 border-violet-400",
+          HabitProgress >= 20 &&
+            HabitProgress < 40 &&
+            "bg-violet-600 border-violet-500",
+          HabitProgress >= 40 &&
+            HabitProgress < 60 &&
+            "bg-violet-700 border-violet-500",
+          HabitProgress >= 60 &&
+            HabitProgress < 80 &&
+            " bg-violet-800 border-violet-600",
+          HabitProgress >= 80 && "bg-violet-900 border-violet-700",
         )}
       ></PopoverTrigger>
       <PopoverContent className="min-w-[320px] p-6 rounded-2xl bg-zinc-900 flex flex-col">
@@ -60,7 +62,7 @@ export function HabitDay({
             {dayAndMonth}
           </span>
 
-          <ProgressBar progress={HabitProgress} />
+          <Progress value={HabitProgress} />
 
           <HabitsList date={date} onCompltedChanged={handleCompletedChange} />
         </div>
