@@ -2,8 +2,7 @@ import dayjs from "dayjs";
 
 export function generateRangeDatesFromYearStart() {
   const startDate = dayjs().startOf("year");
-  const endDate = new Date();
-
+  const endDate = dayjs().add(1, "day");
   let dateRange = [];
   let compareDate = startDate;
 

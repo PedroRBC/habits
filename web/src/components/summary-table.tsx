@@ -1,10 +1,8 @@
-"use client";
-
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useApi } from "../lib/axios";
 import { generateRangeDatesFromYearStart } from "@/lib/generate-dates";
 import { HabitDay } from "./habit-day";
+import { getCookie } from "cookies-next";
+import { cookies } from "next/headers";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -19,14 +17,27 @@ type Summary = {
   completed: number;
 }[];
 
-export function SummaryTable() {
-  const [summary, setSummary] = useState<Summary>([]);
-  const api = useApi();
-  useEffect(() => {
-    api.get("habits/summary").then((res) => {
-      setSummary(res.data);
-    });
-  }, []);
+const fetchSummary = async () => {
+  const token = getCookie("token", { cookies })?.toString() || "";
+  const url =
+    process.env.NODE_ENV === "production"
+      ? "https://habits.pedrorbc.com"
+      : "http://localhost:3000";
+  const res = await fetch(url + "/api/habits/summary", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    next: {
+      revalidate: 60 * 30,
+    },
+  });
+  if (!res.ok) return [];
+  return res.json() as Promise<Summary>;
+};
+
+export async function SummaryTable() {
+  const summary = await fetchSummary();
 
   return (
     <div className="w-full flex ">
