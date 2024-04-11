@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { ThemeToggle } from "./theme-toggle";
 import { LoginOrCreate } from "./login-or-create";
+import { LogOut } from "./logout";
 
 export default function Header() {
   return (
@@ -21,6 +22,7 @@ export default function Header() {
           <div className="flex gap-4 items-center text-lg font-medium">
             <LoginOrCreate />
             <ThemeToggle />
+            <LogOut />
           </div>
         </div>
       </div>

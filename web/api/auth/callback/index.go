@@ -66,6 +66,6 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: false,
 	})
 	
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/summary", http.StatusFound)
 
 }
