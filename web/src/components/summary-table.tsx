@@ -7,7 +7,7 @@ import { HabitDay } from "./habit-day";
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 const summaryDates = generateRangeDatesFromYearStart();
-const minSummrayDatesSize = 18 * 7;
+const minSummrayDatesSize = 16 * 7;
 const amountOfDaysToFill = minSummrayDatesSize - summaryDates.length;
 
 export type Summary = {
