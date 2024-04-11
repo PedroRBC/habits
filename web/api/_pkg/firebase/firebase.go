@@ -214,11 +214,9 @@ func (f *fireBase) GetDayHabits(UserId string, dateString string) (DayHabitsResp
 	}
 
 	completedHabits := []string{}
-	if markedDateSnap.Exists() {
-		var markedDate models.MarkedDate
-		markedDateSnap.DataTo(&markedDate)
-		completedHabits = markedDate.Completed
-	}
+	markedDate := models.MarkedDate{}
+	markedDateSnap.DataTo(&markedDate)
+	completedHabits = append(completedHabits, markedDate.Completed...)
 
 	return DayHabitsResponse{
 		PossibleHabits: possibleHabits,
