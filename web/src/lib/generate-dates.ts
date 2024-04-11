@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 export function generateRangeDatesFromYearStart() {
-  let startDate = dayjs().startOf("year");
+  let startDate = dayjs().subtract(2, "month");
 
   while (startDate.day() !== 0) {
     startDate = startDate.subtract(1, "day");
