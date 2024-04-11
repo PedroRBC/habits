@@ -1,8 +1,8 @@
+"use client";
+
 import dayjs from "dayjs";
 import { generateRangeDatesFromYearStart } from "@/lib/generate-dates";
 import { HabitDay } from "./habit-day";
-import { getCookie } from "cookies-next";
-import { cookies } from "next/headers";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -10,38 +10,17 @@ const summaryDates = generateRangeDatesFromYearStart();
 const minSummrayDatesSize = 18 * 7;
 const amountOfDaysToFill = minSummrayDatesSize - summaryDates.length;
 
-type Summary = {
+export type Summary = {
   id: string;
   date: string;
   amount: number;
   completed: number;
 }[];
 
-const fetchSummary = async () => {
-  const token = getCookie("token", { cookies })?.toString() || "";
-  const url =
-    process.env.NODE_ENV === "production"
-      ? "https://habits.pedrorbc.com"
-      : "http://localhost:3000";
-  const res = await fetch(url + "/api/habits/summary", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    next: {
-      revalidate: 60 * 30,
-    },
-  });
-  if (!res.ok) return [];
-  return res.json() as Promise<Summary>;
-};
-
-export async function SummaryTable() {
-  const summary = await fetchSummary();
-
+export function SummaryTable({ summary }: { summary: Summary }) {
   return (
-    <div className="w-full flex ">
-      <div className="grid grid-rows-7 grid-flow-row gap-3">
+    <div className="w-full flex flex-col lg:flex-row">
+      <div className="grid grid-cols-7 lg:grid-cols-none lg:grid-rows-7 grid-flow-row gap-3">
         {weekDays.map((weekDay, i) => {
           return (
             <div
@@ -54,13 +33,15 @@ export async function SummaryTable() {
         })}
       </div>
 
-      <div className="grid grid-rows-7 grid-flow-col gap-3">
+      <div className="grid grid-cols-7 lg:grid-cols-none lg:grid-rows-7 grid-flow-row lg:grid-flow-col gap-3">
         {summary.length > 0 &&
           summaryDates.map((date) => {
             const dayInSummary = summary.find((day) => {
               return dayjs(date).isSame(day.date, "day");
             });
-
+            if (dayjs(date).isSame(dayjs(), "day")) {
+              console.log(dayInSummary);
+            }
             return (
               <HabitDay
                 key={date.toString()}

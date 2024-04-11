@@ -1,15 +1,33 @@
-import { SummaryTable } from "@/components/summary-table";
+import { type Summary, SummaryTable } from "@/components/summary-table";
+import { getCookie } from "cookies-next";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Summary",
 };
-
-export default function Home() {
+const fetchSummary = async () => {
+  const token = getCookie("token", { cookies })?.toString() || "";
+  const url =
+    process.env.NODE_ENV === "production"
+      ? "https://habits.pedrorbc.com"
+      : "http://localhost:3000";
+  const res = await fetch(url + "/api/habits/summary", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    cache: "no-store",
+  });
+  if (!res.ok) return [];
+  return res.json() as Promise<Summary>;
+};
+export default async function Home() {
+  const summary = await fetchSummary();
   return (
-    <main className="container flex-1 flex items-center">
-      <section className="my-10 flex flex-1 flex-col lg:flex-row items-center justify-between gap-8">
-        <SummaryTable />
+    <main className="container flex-1 flex items-center justify-center">
+      <section>
+        <SummaryTable summary={summary} />
       </section>
     </main>
   );
