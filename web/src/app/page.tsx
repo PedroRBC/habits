@@ -9,9 +9,6 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold whitespace-break-spaces transition-transform">
             Create yours Habits
           </h1>
-          <Link href="/api/auth/google">
-            <Button variant="default">Login Google</Button>
-          </Link>
         </div>
         <div className="flex justify-center"></div>
       </section>

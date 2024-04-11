@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Button } from "./ui/button";
 import { ThemeToggle } from "./theme-toggle";
+import { LoginOrCreate } from "./login-or-create";
 
 export default function Header() {
   return (
@@ -19,7 +20,7 @@ export default function Header() {
             <p>Habits Tracker</p>
           </Link>
           <div className="flex gap-4 items-center text-lg font-medium">
-            <Button variant="default">Create Habbit</Button>
+            <LoginOrCreate />
             <ThemeToggle />
           </div>
         </div>
