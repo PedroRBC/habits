@@ -38,8 +38,8 @@ export function HabitDay({
     <Popover>
       <PopoverTrigger
         className={cn(
-          "w-10 h-10 border-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-bg",
-          HabitProgress === 0 && "bg-zinc-900 border-zinc-800",
+          "w-10 h-10 rounded-lg border-2 transition-colors",
+          HabitProgress === 0 && "bg-primary-foreground border-secondary",
           HabitProgress > 0 &&
             HabitProgress < 20 &&
             " bg-violet-500 border-violet-400",
@@ -55,17 +55,17 @@ export function HabitDay({
           HabitProgress >= 80 && "bg-violet-900 border-violet-700",
         )}
       ></PopoverTrigger>
-      <PopoverContent className="min-w-[320px] p-6 rounded-2xl bg-zinc-900 flex flex-col">
-        <div className="p-4">
-          <span className="font-semibold text-zinc-400">{dayOfWeek}</span>
-          <span className="mt-1 font-extrabold leading-tight text-3xl">
-            {dayAndMonth}
+      <PopoverContent className="px-4 py-3 rounded-2xl space-y-3">
+        <div className="flex flex-row items-center justify-between">
+          <span className="font-semibold text-muted-foreground">
+            {dayOfWeek}
           </span>
-
-          <Progress value={HabitProgress} />
-
-          <HabitsList date={date} onCompltedChanged={handleCompletedChange} />
+          <span className="font-bold text-2xl">{dayAndMonth}</span>
         </div>
+
+        <Progress value={HabitProgress} />
+
+        <HabitsList date={date} onCompltedChanged={handleCompletedChange} />
       </PopoverContent>
     </Popover>
   );
