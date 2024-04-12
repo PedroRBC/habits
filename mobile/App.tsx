@@ -1,11 +1,29 @@
+import "./global.css";
+import {
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_700Bold,
+  useFonts,
+} from "@expo-google-fonts/inter";
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+
+import { Routes } from "@/router";
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <>
+      <Routes />
       <StatusBar style="auto" />
-    </View>
+    </>
   );
 }
