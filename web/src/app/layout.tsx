@@ -8,6 +8,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Providers } from "@/providers";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -39,6 +40,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
