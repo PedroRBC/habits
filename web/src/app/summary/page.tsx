@@ -7,7 +7,8 @@ export const metadata: Metadata = {
   title: "Summary",
 };
 const fetchSummary = async () => {
-  const token = getCookie("token", { cookies })?.toString() || "";
+  const token = getCookie("token", { cookies });
+  if (!token) return [];
   const url =
     process.env.NODE_ENV === "production"
       ? "https://habits.pedrorbc.com"
@@ -15,7 +16,7 @@ const fetchSummary = async () => {
   const res = await fetch(url + "/api/habits/summary", {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token.toString()}`,
     },
     cache: "no-store",
   });
