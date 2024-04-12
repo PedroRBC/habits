@@ -20,11 +20,10 @@ const defaultContext = {
 
 type Content = typeof defaultContext;
 
-const StoreContext = createContext<Content>(defaultContext);
+export const StoreContext = createContext<Content>(defaultContext);
 
 export const StoreProvider = ({ children }: PropsWithChildren) => {
-  const defToken = SecureStore.getItem("token");
-  const [token, setToken] = useState(defToken);
+  const [token, setToken] = useState(null as string | null);
   const [user, setUser] = useState(defaultContext.user);
   const [status, setStatus] = useState(defaultContext.status);
   const url = UseLinkUri();
@@ -55,7 +54,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
           setStatus("authenticated");
         });
     } else {
-      setStatus("unauthenticated");
+      SecureStore.getItemAsync("token").then((token) => {
+        if (token) {
+          setToken(token);
+        } else {
+          setStatus("unauthenticated");
+        }
+      });
     }
   }, [token]);
 

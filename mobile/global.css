@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 3.9%;
+    --background: 75 6% 87%;
+    --foreground: 20 6% 9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
@@ -27,8 +27,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: 0 0% 1%;
-    --foreground: 0 0% 98%;
+    --background: 20 6% 9%;
+    --foreground: 75 6% 87%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;

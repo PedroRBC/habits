@@ -1,11 +1,20 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { useContext } from "react";
 
 import { AppRoutes } from "./app.routes";
+import { AuthRoutes } from "./auth.routes";
+
+import { StoreContext } from "@/contexts/store";
 
 export function Routes() {
+  const { status } = useContext(StoreContext);
+  console.log(status);
+  if (status === "loading") {
+    return null;
+  }
   return (
     <NavigationContainer>
-      <AppRoutes />
+      {status === "authenticated" ? <AppRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
 }
