@@ -2,6 +2,7 @@ import { type Summary, SummaryTable } from "@/components/summary-table";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import type { Metadata } from "next";
+import { CreateHabit } from "@/components/create-habit";
 
 export const metadata: Metadata = {
   title: "Summary",
@@ -27,7 +28,10 @@ export default async function Home() {
   const summary = await fetchSummary();
   return (
     <main className="container flex-1 flex items-center justify-center">
-      <section>
+      <section className="flex flex-col gap-4">
+        <div className="flex justify-center">
+          <CreateHabit />
+        </div>
         <SummaryTable summary={summary} />
       </section>
     </main>
