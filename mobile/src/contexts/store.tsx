@@ -22,8 +22,8 @@ type Content = typeof defaultContext;
 
 const StoreContext = createContext<Content>(defaultContext);
 
-export const StoreProvider = async ({ children }: PropsWithChildren) => {
-  const defToken = await SecureStore.getItemAsync("token");
+export const StoreProvider = ({ children }: PropsWithChildren) => {
+  const defToken = SecureStore.getItem("token");
   const [token, setToken] = useState(defToken);
   const [user, setUser] = useState(defaultContext.user);
   const [status, setStatus] = useState(defaultContext.status);

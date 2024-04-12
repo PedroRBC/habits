@@ -7,6 +7,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { StatusBar } from "expo-status-bar";
 
+import { StoreProvider } from "@/contexts/store";
 import { Routes } from "@/router";
 
 export default function App() {
@@ -21,9 +22,9 @@ export default function App() {
   }
 
   return (
-    <>
+    <StoreProvider>
       <Routes />
       <StatusBar style="auto" />
-    </>
+    </StoreProvider>
   );
 }
