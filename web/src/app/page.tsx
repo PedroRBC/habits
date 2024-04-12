@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <main className="container flex-1 flex items-center justify-center">
-      <section className="flex-1 flex flex-row justify-between">
+      <section className="flex-1 flex flex-col gap-4 md:flex-row justify-between">
         <h1 className="text-4xl font-bold text-center">Welcome to Habits</h1>
 
         <div className="flex flex-col items-center space-y-2">
