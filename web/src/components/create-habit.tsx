@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import {
   Dialog,
   DialogContent,
@@ -9,16 +13,20 @@ import { Button } from "./ui/button";
 import { NewHabitForm } from "./create-form";
 
 export function CreateHabit() {
+  const [open, setOpen] = useState(false);
+
+  const closeDialog = () => setOpen(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button variant="default">Create Habit</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="rounded-xl w-full">
         <DialogHeader>
           <DialogTitle> Criar Hábito </DialogTitle>
         </DialogHeader>
-        <NewHabitForm />
+        <NewHabitForm closeDialog={closeDialog} />
       </DialogContent>
     </Dialog>
   );

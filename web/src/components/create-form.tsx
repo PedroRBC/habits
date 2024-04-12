@@ -1,11 +1,26 @@
 "use client";
 
 import { useApi } from "@/lib/axios";
-import { FormEvent, useState } from "react";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
-import { DialogFooter } from "./ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+import { Input } from "./ui/input";
+
+const formSchema = z.object({
+  title: z.string().min(2).max(50),
+  weekDays: z.array(z.number().min(0).max(6)).nonempty(),
+});
 
 const avaiableWeekDays = [
   "Domingo",
@@ -17,74 +32,89 @@ const avaiableWeekDays = [
   "Sábado",
 ];
 
-export function NewHabitForm() {
-  const [title, setTitle] = useState("");
-  const [weekDays, setWeekDays] = useState<number[]>([]);
+export function NewHabitForm({ closeDialog }: { closeDialog: () => void }) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      weekDays: [],
+    },
+  });
   const api = useApi();
 
-  async function createNewHabit(event: FormEvent) {
-    event.preventDefault();
-
-    if (!title || weekDays.length === 0) return;
-
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     await api.post("habits", {
-      title,
-      weekDays,
+      title: values.title,
+      weekDays: values.weekDays,
     });
-    setTitle("");
-    setWeekDays([]);
-  }
-
-  function handelToggleWeekDay(weekDay: number) {
-    if (weekDays.includes(weekDay)) {
-      const newWeekDays = weekDays.filter((day) => day !== weekDay);
-      setWeekDays(newWeekDays);
-    } else {
-      const newWeekDays = [...weekDays, weekDay];
-
-      setWeekDays(newWeekDays);
-    }
+    closeDialog();
   }
 
   return (
-    <form onSubmit={createNewHabit} className="w-full flex flex-col mt-6">
-      <label htmlFor="title" className="font-semibold leading-tight">
-        Qual seu comprometimento
-      </label>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor={field.name}>
+                Qual seu comprometimento
+              </FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  id={field.name}
+                  placeholder="ex.: Ler, Estudar, Dormir bem, etc... "
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <input
-        type="text"
-        id="title"
-        placeholder="ex.: Ler, Estudar, Dormir bem, etc... "
-        className="p-4 rounded-lg mt-3 bg-zinc-800 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-zinc-900"
-        autoFocus
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
+        <FormField
+          control={form.control}
+          name="weekDays"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor={field.name}>Qual a recorrência?</FormLabel>
+              {avaiableWeekDays.map((weekDay, i) => (
+                <FormField
+                  key={i}
+                  control={form.control}
+                  name={"weekDays"}
+                  render={({ field }) => (
+                    <FormItem
+                      key={i}
+                      className="flex flex-row items-start space-x-3 space-y-1"
+                    >
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value?.includes(i)}
+                          onCheckedChange={(checked) => {
+                            return checked
+                              ? field.onChange([...field.value, i])
+                              : field.onChange(
+                                  field.value?.filter((day) => day !== i),
+                                );
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel>{weekDay}</FormLabel>
+                    </FormItem>
+                  )}
+                />
+              ))}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <label htmlFor="" className="font-semibold leading-tight mt-4">
-        Qual a recorrência?
-      </label>
-
-      <div className="mt-3 flex flex-col gap-2">
-        {avaiableWeekDays.map((weekDay, i) => {
-          return (
-            <div key={weekDay} className="flex items-center gap-3">
-              <Checkbox
-                checked={weekDays.includes(i)}
-                onCheckedChange={() => handelToggleWeekDay(i)}
-              />
-              <span className="text-white leading-tight">{weekDay}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      <DialogFooter>
-        <DialogClose asChild>
+        <div className="flex justify-center">
           <Button type="submit">Criar Hábito</Button>
-        </DialogClose>
-      </DialogFooter>
-    </form>
+        </div>
+      </form>
+    </Form>
   );
 }
