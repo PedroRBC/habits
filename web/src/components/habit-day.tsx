@@ -16,12 +16,14 @@ interface HabitDayProps {
   defaultCompleted?: number;
   amount?: number;
   date: Date;
+  dayIs: "today" | "before" | "after";
 }
 
 export function HabitDay({
   amount = 0,
   defaultCompleted = 0,
   date,
+  dayIs,
 }: HabitDayProps) {
   const [completed, setCompleted] = useState(defaultCompleted);
 
@@ -34,25 +36,43 @@ export function HabitDay({
     setCompleted(completed);
   }
 
+  // {
+  //   amountOfDaysToFill > 0 &&
+  //     Array.from({ length: amountOfDaysToFill }).map((_, i) => {
+  //       return (
+  //         <div
+  //           key={i}
+  //           className="w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed"
+  //         />
+  //       );
+  //     });
+  // }
+
+  const colorByProgress = cn(
+    HabitProgress === 0 && "bg-primary-foreground border-secondary",
+    HabitProgress > 0 &&
+      HabitProgress < 20 &&
+      "bg-violet-500 border-violet-400",
+    HabitProgress >= 20 &&
+      HabitProgress < 40 &&
+      "bg-violet-600 border-violet-500",
+    HabitProgress >= 40 &&
+      HabitProgress < 60 &&
+      "bg-violet-700 border-violet-500",
+    HabitProgress >= 60 &&
+      HabitProgress < 80 &&
+      "bg-violet-800 border-violet-600",
+    HabitProgress >= 80 && "bg-violet-900 border-violet-700",
+  );
+
   return (
     <Popover>
       <PopoverTrigger
         className={cn(
           "w-10 h-10 rounded-lg border-2 transition-colors",
-          HabitProgress === 0 && "bg-primary-foreground border-secondary",
-          HabitProgress > 0 &&
-            HabitProgress < 20 &&
-            " bg-violet-500 border-violet-400",
-          HabitProgress >= 20 &&
-            HabitProgress < 40 &&
-            "bg-violet-600 border-violet-500",
-          HabitProgress >= 40 &&
-            HabitProgress < 60 &&
-            "bg-violet-700 border-violet-500",
-          HabitProgress >= 60 &&
-            HabitProgress < 80 &&
-            " bg-violet-800 border-violet-600",
-          HabitProgress >= 80 && "bg-violet-900 border-violet-700",
+          dayIs === "today" && cn(colorByProgress, "border border-foreground"),
+          dayIs === "before" && colorByProgress,
+          dayIs === "after" && "border-zinc-800 bg-zinc-900  opacity-40",
         )}
       ></PopoverTrigger>
       <PopoverContent className="px-4 py-3 rounded-2xl space-y-3">
@@ -65,7 +85,11 @@ export function HabitDay({
 
         <Progress value={HabitProgress} />
 
-        <HabitsList date={date} onCompltedChanged={handleCompletedChange} />
+        <HabitsList
+          date={date}
+          dayIs={dayIs}
+          onCompltedChanged={handleCompletedChange}
+        />
       </PopoverContent>
     </Popover>
   );

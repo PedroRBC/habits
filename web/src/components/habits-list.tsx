@@ -8,6 +8,7 @@ import { Skeleton } from "./ui/skeleton";
 
 interface HabitsListProps {
   date: Date;
+  dayIs: "today" | "before" | "after";
 
   onCompltedChanged: (completed: number) => void;
 }
@@ -21,7 +22,11 @@ interface HabitsInfo {
   completedHabits: string[];
 }
 
-export function HabitsList({ date, onCompltedChanged }: HabitsListProps) {
+export function HabitsList({
+  date,
+  onCompltedChanged,
+  dayIs,
+}: HabitsListProps) {
   const [habitsInfo, setHabitsInfo] = useState<HabitsInfo>();
   const [loadingInfo, setLoadingInfo] = useState(true);
   const api = useApi();
@@ -63,6 +68,16 @@ export function HabitsList({ date, onCompltedChanged }: HabitsListProps) {
   return (
     <div className="flex flex-col gap-3">
       {habitsInfo?.possibleHabits.map((habit) => {
+        if (dayIs == "after") {
+          return (
+            <div key={habit.id} className="flex flex-row items-center gap-3">
+              <Checkbox disabled={true}></Checkbox>
+              <label className="font-medium text-xl leading-tight group-data-[state=checked]:line-through group-data-[state=checked]:text-zinc-400">
+                {habit.title}
+              </label>
+            </div>
+          );
+        }
         return (
           <div key={habit.id} className="flex flex-row items-center gap-3">
             <Checkbox

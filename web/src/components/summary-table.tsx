@@ -8,8 +8,6 @@ import { useIsReduced } from "@/lib/useReduced";
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 const summaryDates = generateRangeDatesFromYearStart();
-const minSummrayDatesSize = 16 * 7;
-const amountOfDaysToFill = minSummrayDatesSize - summaryDates.length;
 
 export type Summary = {
   id: string;
@@ -43,24 +41,21 @@ export function SummaryTable({ summary }: { summary: Summary }) {
           if (useReducedRange && i <= 7 * 8 - 1) {
             return null;
           }
+          const dayIs = dayjs(date).isSame(dayjs(), "day")
+            ? "today"
+            : dayjs(date).isBefore(dayjs())
+              ? "before"
+              : "after";
           return (
             <HabitDay
               key={date.toString()}
               amount={dayInSummary?.amount}
               defaultCompleted={dayInSummary?.completed}
+              dayIs={dayIs}
               date={date}
             />
           );
         })}
-        {amountOfDaysToFill > 0 &&
-          Array.from({ length: amountOfDaysToFill }).map((_, i) => {
-            return (
-              <div
-                key={i}
-                className="w-10 h-10 bg-zinc-900 border-2 border-zinc-800 rounded-lg opacity-40 cursor-not-allowed"
-              />
-            );
-          })}
       </div>
     </div>
   );

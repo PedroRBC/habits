@@ -4,12 +4,16 @@ import dayjs from "dayjs";
 
 export function generateRangeDatesFromYearStart() {
   let startDate = dayjs().subtract(3, "month").startOf("day");
+  let endDate = dayjs().add(2, "week");
 
   while (startDate.day() !== 0) {
     startDate = startDate.subtract(1, "day");
   }
 
-  const endDate = dayjs();
+  while (endDate.day() !== 6) {
+    endDate = endDate.add(1, "day");
+  }
+
   let dateRange = [];
   let compareDate = startDate;
 
