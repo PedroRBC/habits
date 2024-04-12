@@ -7,9 +7,14 @@ import (
 	"habits-app-go/api/_pkg/lib"
 	"habits-app-go/api/_pkg/models"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/markbates/goth/gothic"
+)
+
+var (
+	appUri = os.Getenv("APP_URI")
 )
 
 type Key string
@@ -66,6 +71,25 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: false,
 	})
 	
-	http.Redirect(w, r, "/summary", http.StatusFound)
+	_, err = r.Cookie("redirectApp")
+	if err != nil {
+		http.Redirect(w, r, "/summary", http.StatusFound)
+		return
+	} else {
+		http.SetCookie(w, &http.Cookie{
+			Name: "redirectApp",
+			Value: "",
+			Expires: time.Now().Add(-time.Hour),
+		})
+		
+		appToken, err := lib.AppToken(user.Id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		redUri := appUri + appToken
+		http.Redirect(w, r, redUri, http.StatusFound)
+	}
 
 }

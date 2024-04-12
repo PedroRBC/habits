@@ -28,6 +28,21 @@ func CreateToken(userId string) (string, error) {
 	return tokenString, nil
 }
 
+func AppToken(userId string) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
+		jwt.MapClaims{
+			"userId": "app",
+			"exp":    time.Now().Add(time.Hour * 17280).Unix(), // 2 years
+		})
+
+	tokenString, err := token.SignedString(JWT_SECRET)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
 func ParseToken(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
