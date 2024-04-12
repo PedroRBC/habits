@@ -180,7 +180,12 @@ type DayHabitsResponse struct {
 /* GetDayPossibleHabits retrieves a list of a user's habits from Firestore */
 func (f *fireBase) GetDayPossibleHabits(UserId string, date *carbon.Carbon) ([]*models.Habit, error) {
 
-	possibleHabitsSnap, err := f.Store.Collection("users").Doc(UserId).Collection("habits").Where("created_at", "<=", date.StdTime()).Where("avaliable_days", "array-contains", date.DayOfWeek()).Documents(ctx).GetAll()
+	dayOfWeek := date.DayOfWeek()
+	if dayOfWeek == 7 {
+		dayOfWeek = 0
+	}
+
+	possibleHabitsSnap, err := f.Store.Collection("users").Doc(UserId).Collection("habits").Where("created_at", "<=", date.StdTime()).Where("avaliable_days", "array-contains", dayOfWeek).Documents(ctx).GetAll()
 	if err != nil {
 		return nil, err
 	}
