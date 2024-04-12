@@ -30,6 +30,8 @@ export function AuthProvider() {
           }
           return;
         }
+      } else {
+        dispatch(logout());
       }
     }
     if (status == "loading") fetchData();
