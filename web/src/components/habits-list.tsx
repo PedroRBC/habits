@@ -63,27 +63,17 @@ export function HabitsList({
     onCompltedChanged(completedHabits.length);
   }
 
-  const isDateInPast = dayjs(date).endOf("day").isBefore(new Date());
+  const notToday = dayIs !== "today";
 
   return (
     <div className="flex flex-col gap-3">
       {habitsInfo?.possibleHabits.map((habit) => {
-        if (dayIs == "after") {
-          return (
-            <div key={habit.id} className="flex flex-row items-center gap-3">
-              <Checkbox disabled={true}></Checkbox>
-              <label className="font-medium text-xl leading-tight group-data-[state=checked]:line-through group-data-[state=checked]:text-zinc-400">
-                {habit.title}
-              </label>
-            </div>
-          );
-        }
         return (
           <div key={habit.id} className="flex flex-row items-center gap-3">
             <Checkbox
               onCheckedChange={() => handleToggleHabit(habit.id)}
               checked={habitsInfo.completedHabits.includes(habit.id)}
-              disabled={isDateInPast}
+              disabled={notToday}
             ></Checkbox>
             <label className="font-medium text-xl leading-tight group-data-[state=checked]:line-through group-data-[state=checked]:text-zinc-400">
               {habit.title}
