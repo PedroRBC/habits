@@ -31,7 +31,7 @@ func CreateToken(userId string) (string, error) {
 func AppToken(userId string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"userId": "app",
+			"userId": userId,
 			"exp":    time.Now().Add(time.Hour * 17280).Unix(), // 2 years
 		})
 
