@@ -2,10 +2,7 @@ import { openAuthSessionAsync } from "expo-web-browser";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const ApiUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://habits.pedrorbc.com/api"
-    : "http://localhost:3000/api";
+import { ApiUrl } from "@/contexts/store";
 
 export function Login() {
   const inset = useSafeAreaInsets();
@@ -27,6 +24,7 @@ export function Login() {
       <View className="items-center">
         <TouchableOpacity
           onPress={handlePressLogin}
+          activeOpacity={0.8}
           className="bg-secondary p-2 rounded-md mt-2"
         >
           <Text className="text-foreground text-lg">Entrar com Google</Text>

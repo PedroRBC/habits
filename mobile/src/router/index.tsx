@@ -8,7 +8,6 @@ import { StoreContext } from "@/contexts/store";
 
 export function Routes() {
   const { status } = useContext(StoreContext);
-  console.log(status);
   if (status === "loading") {
     return null;
   }

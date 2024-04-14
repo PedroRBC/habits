@@ -1,23 +1,16 @@
 import dayjs from "dayjs";
 
-export function generateRangeDatesFromYearStart() {
-  let startDate = dayjs().subtract(3, "month").startOf("day");
-  let endDate = dayjs().add(2, "week");
+export async function generateRangeDatesFromYearStart() {
+  const now = dayjs().startOf("day");
+  const startDate = now.subtract(2, "month").startOf("week");
+  const endDate = now.add(2, "week").endOf("week");
 
-  while (startDate.day() !== 0) {
-    startDate = startDate.subtract(1, "day");
-  }
-
-  while (endDate.day() !== 6) {
-    endDate = endDate.add(1, "day");
-  }
-
+  let currentDate = startDate;
   const dateRange = [];
-  let compareDate = startDate;
 
-  while (compareDate.isBefore(endDate)) {
-    dateRange.push(compareDate.toDate());
-    compareDate = compareDate.add(1, "day");
+  while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
+    dateRange.push(currentDate.toDate());
+    currentDate = currentDate.add(1, "day");
   }
 
   return dateRange;

@@ -2,14 +2,14 @@
   "expo": {
     "name": "Habit Tracker",
     "slug": "HabitTracker",
-    "version": "1.0.0",
+    "version": "0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,8 +23,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#000"
-      }
+        "backgroundColor": "#000",
+      },
+      "package": "com.pedrorbc.HabitTracker"
     },
     "web": {
       "favicon": "./assets/favicon.png",
