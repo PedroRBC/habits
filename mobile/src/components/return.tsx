@@ -19,17 +19,9 @@ export function Return({
       size="icon"
     >
       {direction === "left" ? (
-        <ArrowLeft
-          size={24}
-          strokeWidth={2.5}
-          className="text-primary-foreground"
-        />
+        <ArrowLeft size={24} strokeWidth={2.5} className="text-foreground" />
       ) : (
-        <ArrowRight
-          size={24}
-          strokeWidth={2.5}
-          className="text-primary-foreground"
-        />
+        <ArrowRight size={24} strokeWidth={2.5} className="text-foreground" />
       )}
     </Button>
   );

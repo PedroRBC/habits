@@ -4,6 +4,9 @@ import {
   ArrowRight,
   CirclePlus,
   LucideIcon,
+  LogOut,
+  ChevronRight,
+  Bell,
 } from "lucide-react-native";
 import { cssInterop } from "nativewind";
 
@@ -23,5 +26,8 @@ interopIcon(Check);
 interopIcon(ArrowLeft);
 interopIcon(ArrowRight);
 interopIcon(CirclePlus);
+interopIcon(LogOut);
+interopIcon(ChevronRight);
+interopIcon(Bell);
 
-export { Check, ArrowLeft, ArrowRight, CirclePlus };
+export { Check, ArrowLeft, ArrowRight, CirclePlus, LogOut, ChevronRight, Bell };
