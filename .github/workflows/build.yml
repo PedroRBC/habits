@@ -74,13 +74,13 @@ jobs:
       run: |
         eas build --local \
           --non-interactive \
-          --output=./app-build \
+          --output=./app-build.apk \
           --platform=${{ github.event.inputs.platform }} \
           --profile=${{ github.event.inputs.profile }}
 
     - name: 📱 Upload binary
       uses: actions/upload-artifact@v2
       with:
-        name: app-${{ github.event.inputs.platform }}
-        path: app-build
+        name: Habits-Track-${{ github.event.inputs.platform }}.apk
+        path: ./app-build.apk
       
