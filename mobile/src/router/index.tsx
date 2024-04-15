@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useContext } from "react";
 
 import { AppRoutes } from "./app.routes";
-import { AuthRoutes } from "./auth.routes";
 
 import { StoreContext } from "@/contexts/store";
 
@@ -13,7 +12,7 @@ export function Routes() {
   }
   return (
     <NavigationContainer>
-      {status === "authenticated" ? <AppRoutes /> : <AuthRoutes />}
+      <AppRoutes />
     </NavigationContainer>
   );
 }
