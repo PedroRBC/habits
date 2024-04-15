@@ -27,12 +27,12 @@ jobs:
     strategy:
       matrix:
         node: [16.x]
+    defaults:
+      run: 
+        working-directory: mobile
     steps:
     - name: 🏗 Setup repo
       uses: actions/checkout@v2
-
-    - name: 🏗 Enter folder
-      run: cd mobile
 
     - name: 🏗 Setup Node
       uses: actions/setup-node@v2
