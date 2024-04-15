@@ -40,9 +40,7 @@ jobs:
         rm -rf mobile
 
     - name: Load Google Service file
-      env:
-        DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-      run: echo $DATA | base64 -di > google-services.json
+      run: echo ${{ secrets.GOOGLE_SERVICES_JSON }} | base64 -di > google-services.json
 
     - name: 🏗 Setup Node
       uses: actions/setup-node@v2
@@ -55,6 +53,7 @@ jobs:
       with:
         distribution: 'microsoft'
         java-version: '17'
+        cache: gradle
 
     - name: 🏗 Setup Expo and EAS
       uses: expo/expo-github-action@v8
