@@ -49,6 +49,11 @@
         }
       ]
     ],
-    "scheme": "habits-app"
+    "scheme": "habits-app",
+    "extra": {
+      "eas": {
+        "projectId": "7237c135-6c92-4369-8cf1-a136c37c4354"
+      }
+    }
   }
 }
