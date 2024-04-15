@@ -2,7 +2,6 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
 import React, { useCallback, useContext, useState } from "react";
 import {
-  Alert,
   Dimensions,
   FlatList,
   RefreshControl,
@@ -11,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
 import { Header } from "@/components/header";
 import { Loading } from "@/components/loading";
@@ -48,7 +48,11 @@ export function Home() {
       const summary = await generateRangeDatesFromYearStart();
       setSummary({ summary, marked: res.data });
     } catch (err) {
-      Alert.alert("Ops", "Não foi possível carregar o sumário de hábitos");
+      Toast.show({
+        type: "error",
+        text1: "Ops",
+        text2: "Não foi possível carregar o sumário de hábitos",
+      });
       console.error(err);
     } finally {
       setLoading(false);

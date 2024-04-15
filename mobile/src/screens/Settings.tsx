@@ -1,6 +1,7 @@
 import { nativeApplicationVersion } from "expo-application";
 import { Alert, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
 import { Return } from "@/components/return";
 import { TabPress, TabSection, TabToggle } from "@/components/section-tab";
@@ -39,7 +40,11 @@ export function Settings() {
             icon="Bell"
             checked={settings.notifcations}
             onCheckedChange={() => {
-              Alert.alert("Notificações", "Não implementado");
+              Toast.show({
+                type: "base",
+                text1: "Aviso!",
+                text2: "Essa função ainda não está disponível.",
+              });
             }}
           />
         </TabSection>

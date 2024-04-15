@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Text, View } from "react-native";
+import Toast from "react-native-toast-message";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,11 @@ export function CreateForm() {
     try {
       await api.post("/habits", values);
       form.reset();
+      Toast.show({
+        type: "success",
+        text1: "Novo Habito Criado!",
+        text2: "Seu novo hábito foi criado com sucesso!",
+      });
       goBack();
     } catch (error) {
       console.error(error);
