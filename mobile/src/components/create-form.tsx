@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import crashlytics from "@react-native-firebase/crashlytics";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -74,7 +75,7 @@ export function CreateForm() {
       });
       goBack();
     } catch (error) {
-      console.error(error);
+      crashlytics().recordError(new Error("Failed to create habit", error!));
     }
   }
 

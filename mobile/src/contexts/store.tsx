@@ -1,4 +1,6 @@
-import axios, { AxiosError, type AxiosInstance } from "axios";
+import analytics from "@react-native-firebase/analytics";
+import crashlytics from "@react-native-firebase/crashlytics";
+import axios, { type AxiosInstance } from "axios";
 import { useURL as UseLinkUri } from "expo-linking";
 import * as SecureStore from "expo-secure-store";
 import {
@@ -8,6 +10,8 @@ import {
   useEffect,
   useState,
 } from "react";
+
+import { mmkvStorage } from "@/lib/mmkvStorage";
 
 // export const ApiUrl =
 //   process.env.NODE_ENV === "production"
@@ -54,8 +58,11 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   async function tryLogin() {
     try {
       const { data, status } = await api.get("/user");
+      const Data = data as typeof defaultContext.user;
       if (status === 200) {
-        setUser(data);
+        setUser(Data);
+        mmkvStorage.set("user.id", Data.id);
+        mmkvStorage.set("user.name", Data.name);
         setStatus("authenticated");
       } else {
         setStatus("unauthenticated");
@@ -64,6 +71,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       setStatus("unauthenticated");
     }
   }
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      analytics().setUserId(user.id);
+      crashlytics().setUserId(user.id);
+    }
+  }, [status]);
 
   useEffect(() => {
     const getToken = async () => {

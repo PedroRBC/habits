@@ -1,7 +1,14 @@
+import crashlytics from "@react-native-firebase/crashlytics";
 import { useRoute } from "@react-navigation/native";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, View, RefreshControl } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  RefreshControl,
+  AppRegistry,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Loading } from "@/components/loading";
@@ -63,7 +70,9 @@ export function Day() {
       });
       setDayInfo(data);
     } catch (error) {
-      console.log(error);
+      crashlytics().recordError(
+        new Error("Failed to fetch Habits from day " + parsedDate, error!),
+      );
     } finally {
       setLoading(false);
     }
@@ -88,7 +97,9 @@ export function Day() {
         }
       });
     } catch (error) {
-      console.log(error);
+      crashlytics().recordError(
+        new Error(`Failed to patch Habit ${habitId}`, error!),
+      );
     }
   }
 
@@ -161,3 +172,5 @@ export function Day() {
     </View>
   );
 }
+
+AppRegistry.registerComponent("Day", () => Day);

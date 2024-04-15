@@ -1,7 +1,6 @@
 import { nativeApplicationVersion } from "expo-application";
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Toast from "react-native-toast-message";
 
 import { Return } from "@/components/return";
 import { TabPress, TabSection, TabToggle } from "@/components/section-tab";
@@ -11,7 +10,7 @@ import { useStore } from "@/contexts/store";
 export function Settings() {
   const { top: topInset } = useSafeAreaInsets();
   const version = nativeApplicationVersion ?? "1.0.0";
-  const settings = useSettings();
+  const { notifcations, toggleNotifications } = useSettings();
   const { logOut } = useStore();
 
   return (
@@ -38,14 +37,8 @@ export function Settings() {
           <TabToggle
             label="Notificações"
             icon="Bell"
-            checked={settings.notifcations}
-            onCheckedChange={() => {
-              Toast.show({
-                type: "base",
-                text1: "Aviso!",
-                text2: "Essa função ainda não está disponível.",
-              });
-            }}
+            checked={notifcations}
+            onCheckedChange={toggleNotifications}
           />
         </TabSection>
       </View>

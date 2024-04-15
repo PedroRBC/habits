@@ -1,4 +1,7 @@
+import notifee, { type Event, EventType } from "@notifee/react-native";
+import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useEffect } from "react";
 
 import { Loading } from "@/components/loading";
 import { useStore } from "@/contexts/store";
@@ -21,6 +24,46 @@ const { Navigator, Screen } = createNativeStackNavigator<AppStackParamList>();
 
 export function AppRoutes() {
   const { status } = useStore();
+  const { navigate } = useNavigation();
+
+  // Initial notification open Day screen
+  async function bootstrap() {
+    if (status === "authenticated") {
+      const initialNotification = await notifee.getInitialNotification();
+      if (initialNotification) {
+        navigate("Day", {
+          date: initialNotification.notification.data!.date as string,
+          dayIs: "today",
+        });
+      }
+    }
+  }
+
+  useEffect(() => {
+    bootstrap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
+  function handleNotification({ type, detail }: Event) {
+    if (type === EventType.PRESS) {
+      navigate("Day", {
+        date: detail.notification!.data!.date as string,
+        dayIs: "today",
+      });
+    }
+  }
+
+  useEffect(() => {
+    return notifee.onForegroundEvent((event) => {
+      handleNotification(event);
+    });
+  }, []);
+  useEffect(() => {
+    return notifee.onBackgroundEvent(async (event) => {
+      handleNotification(event);
+    });
+  }, []);
+
   if (status === "loading") {
     return <Loading />;
   }
