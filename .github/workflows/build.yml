@@ -37,6 +37,13 @@ jobs:
     - name:  🏗 Move Files
       run: |
         mv mobile/* .
+        rm -rf mobile
+        rm .gitignore
+
+    - name: Load Google Service file
+      env:
+        DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      run: echo $DATA | base64 -di > app/google-services.json
 
     - name: 🏗 Setup Node
       uses: actions/setup-node@v2
