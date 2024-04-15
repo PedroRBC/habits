@@ -2,7 +2,7 @@
   "expo": {
     "name": "Habit Tracker",
     "slug": "HabitTracker",
-    "version": "0.5",
+    "version": "0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000",
       },
-      "package": "com.pedrorbc.HabitTracker"
+      "package": "com.pedrorbc.HabitTracker",
+      "googleServicesFile": "./google-services.json",
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -33,7 +34,10 @@
     },
     "plugins": [
       "expo-font",
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
+      "@react-native-firebase/perf",
     ],
     "scheme": "habits-app"
   }
