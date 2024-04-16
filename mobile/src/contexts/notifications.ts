@@ -4,7 +4,9 @@ import dayjs from "dayjs";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as Notifications from "expo-notifications";
 import * as TaskManager from "expo-task-manager";
+import { Bell } from "lucide-react-native";
 import { useEffect } from "react";
+import Toast from "react-native-toast-message";
 
 import { mmkvStorage } from "@/lib/mmkvStorage";
 
@@ -33,6 +35,40 @@ export async function askNotificationPermission() {
   }
 }
 
+export async function askNotificationPermissionNotify() {
+  const existingStatus = await checkGranted();
+  if (!existingStatus) {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status === "granted") {
+      Toast.show({
+        type: "success",
+        text1: "Notificações.",
+        text2:
+          "As notificações estão ativadas, você receberá lembretes diários!",
+        props: { icon: Bell },
+      });
+      return true;
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Notificações.",
+        text2:
+          "As notificações estão desativadas, ative-as nas configurações do app para receber lembretes!",
+        props: { icon: Bell },
+      });
+      return false;
+    }
+  } else {
+    Toast.show({
+      type: "success",
+      text1: "Notificações.",
+      text2: "As notificações estão ativadas, você receberá lembretes diários!",
+      props: { icon: Bell },
+    });
+    return true;
+  }
+}
+
 export async function scheduleNotification() {
   const isEnable = mmkvStorage.getBoolean("notifications") ?? false; // Check if notifications are enabled
   if (!isEnable) return;
@@ -40,14 +76,14 @@ export async function scheduleNotification() {
   if (!isAllowed) return;
 
   const channelId = await notifee.createChannel({
-    id: "habits-tracker",
-    name: "Habits Tracker 2",
+    id: "habits-reminder",
+    name: "Reminder Notification",
     vibration: false,
     importance: AndroidImportance.DEFAULT,
   });
 
   notifee.displayNotification({
-    id: `${mmkvStorage.getString("user.id")}-reminder`,
+    id: "habits-reminder",
     title: `Olá, <strong>${mmkvStorage.getString("user.name")}</strong>`,
     subtitle: "Lembrete diário!",
     body: `Não se esqueça de marcar seus hábitos hoje!`,
