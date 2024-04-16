@@ -76,14 +76,14 @@ export async function scheduleNotification() {
   if (!isAllowed) return;
 
   const channelId = await notifee.createChannel({
-    id: "habits-tracker",
-    name: "Habits Tracker 2",
+    id: "habits-reminder",
+    name: "Reminder Notification",
     vibration: false,
     importance: AndroidImportance.DEFAULT,
   });
 
   notifee.displayNotification({
-    id: `${mmkvStorage.getString("user.id")}-reminder`,
+    id: "habits-reminder",
     title: `Olá, <strong>${mmkvStorage.getString("user.name")}</strong>`,
     subtitle: "Lembrete diário!",
     body: `Não se esqueça de marcar seus hábitos hoje!`,

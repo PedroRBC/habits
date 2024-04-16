@@ -14,6 +14,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { EnableNotifications } from "@/contexts/notifications";
 import { SettingsProvider } from "@/contexts/settings";
 import { StoreProvider } from "@/contexts/store";
+import { UpdatesProvider } from "@/contexts/updates";
 import { Routes } from "@/router";
 
 export default function App() {
@@ -35,10 +36,12 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <StoreProvider>
-        <SettingsProvider>
-          <Routes />
-          <StatusBar style="auto" />
-        </SettingsProvider>
+        <UpdatesProvider>
+          <SettingsProvider>
+            <Routes />
+            <StatusBar style="auto" />
+          </SettingsProvider>
+        </UpdatesProvider>
       </StoreProvider>
       <ToastProvider />
     </SafeAreaProvider>

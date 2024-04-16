@@ -47,11 +47,19 @@ export function AppRoutes() {
   }, [status]);
 
   function handleNotification({ type, detail }: Event) {
-    if (type === EventType.PRESS) {
-      navigate("Day", {
-        date: detail.notification!.data!.date as string,
-        dayIs: "today",
-      });
+    if (type === EventType.PRESS && detail.notification?.id) {
+      const notId = detail.notification.id;
+      if (
+        notId === "habits-update" &&
+        detail.pressAction?.id === "open_update"
+      ) {
+        navigate("Settings");
+      } else if (notId === "habits-notification") {
+        navigate("Day", {
+          date: detail.notification!.data!.date as string,
+          dayIs: "today",
+        });
+      }
     }
   }
 
