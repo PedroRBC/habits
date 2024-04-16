@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { nativeApplicationVersion } from "expo-application";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -12,6 +13,7 @@ export function Settings() {
   const version = nativeApplicationVersion ?? "1.0.0";
   const { notifcations, toggleNotifications } = useSettings();
   const { logOut } = useStore();
+  const { navigate } = useNavigation();
 
   return (
     <View className="flex-1 bg-background text-foreground">
@@ -39,6 +41,14 @@ export function Settings() {
             icon="Bell"
             checked={notifcations}
             onCheckedChange={toggleNotifications}
+          />
+        </TabSection>
+        <TabSection label="Sobre">
+          <TabPress label="Verificar Atualizações" icon="Globe" />
+          <TabPress
+            label="Change Log"
+            icon="Info"
+            onPress={() => navigate("ChangeLog")}
           />
         </TabSection>
       </View>

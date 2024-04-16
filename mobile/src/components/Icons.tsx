@@ -11,6 +11,7 @@ import {
   CheckSquare,
   Info,
   BatteryWarning,
+  Globe,
 } from "lucide-react-native";
 import { cssInterop } from "nativewind";
 
@@ -37,6 +38,7 @@ interopIcon(AlertTriangle);
 interopIcon(CheckSquare);
 interopIcon(Info);
 interopIcon(BatteryWarning);
+interopIcon(Globe);
 
 export {
   Check,
@@ -50,4 +52,5 @@ export {
   CheckSquare,
   Info,
   BatteryWarning,
+  Globe,
 };

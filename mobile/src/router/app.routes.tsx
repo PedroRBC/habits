@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { Loading } from "@/components/loading";
 import { useStore } from "@/contexts/store";
+import { ChangeLog } from "@/screens/ChangeLog";
 import { Create } from "@/screens/Create";
 import { Day } from "@/screens/Day";
 import { Home } from "@/screens/Home";
@@ -18,6 +19,7 @@ export type AppStackParamList = {
   Settings: undefined;
   Login: undefined;
   Loading: undefined;
+  ChangeLog: undefined;
 };
 
 const { Navigator, Screen } = createNativeStackNavigator<AppStackParamList>();
@@ -85,6 +87,7 @@ export function AppRoutes() {
               animation: "slide_from_left",
             }}
           />
+          <Screen name="ChangeLog" component={ChangeLog} />
         </>
       ) : (
         <Screen name="Login" component={Login} />
