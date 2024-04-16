@@ -7,14 +7,7 @@ import notifee, {
 import crashlytics from "@react-native-firebase/crashlytics";
 import axios from "axios";
 import { nativeApplicationVersion } from "expo-application";
-import * as FileSystem from "expo-file-system";
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, PropsWithChildren, useContext, useEffect } from "react";
 import ReactNativeBlobUtil from "react-native-blob-util";
 
 import { askNotificationPermission } from "./notifications";
@@ -23,7 +16,6 @@ import { useStore } from "./store";
 import { mmkvStorage } from "@/lib/mmkvStorage";
 
 const defaultContext = {
-  isUpdated: true,
   verifyUpdate: () => {},
 };
 
@@ -32,7 +24,6 @@ type Content = typeof defaultContext;
 const UpdatesContext = createContext<Content>(defaultContext);
 
 export const UpdatesProvider = ({ children }: PropsWithChildren) => {
-  const [isUpdated, setIsUpdated] = useState(true);
   const { status } = useStore();
 
   async function verifyUpdate() {
@@ -40,8 +31,8 @@ export const UpdatesProvider = ({ children }: PropsWithChildren) => {
       const releases = await axios.get(
         "https://api.github.com/repos/pedrorbc/habits/releases",
       );
-      const latestRelease = releases.data[0].tag_name.replace("v", "");
-      if (latestRelease !== "1.5.0") {
+      const latestRelease: string = releases.data[0].tag_name.replace("v", "");
+      if (latestRelease !== nativeApplicationVersion) {
         const release = {
           name: releases.data[0].assets[0].name,
           downloadUrl: releases.data[0].assets[0].browser_download_url,
@@ -50,7 +41,8 @@ export const UpdatesProvider = ({ children }: PropsWithChildren) => {
         mmkvStorage.set("release.version", release.version);
         mmkvStorage.set("release.name", release.name);
         mmkvStorage.set("release.downloadUrl", release.downloadUrl);
-        setIsUpdated(false);
+        mmkvStorage.set("isUpdated", false);
+        notifyUpdate();
       }
     } catch (error) {
       console.error(error);
@@ -152,15 +144,12 @@ export const UpdatesProvider = ({ children }: PropsWithChildren) => {
     }
   }
 
-  useEffect(() => {
-    if (!isUpdated) {
-      notifyUpdate();
-    }
-  }, [isUpdated]);
-
   function handleNotification({ type, detail }: Event) {
     if (type === EventType.ACTION_PRESS && detail.pressAction?.id) {
-      if (detail.pressAction.id === "update" && !isUpdated) {
+      if (
+        detail.pressAction.id === "update" &&
+        !mmkvStorage.getBoolean("isUpdated")
+      ) {
         startUpdate();
       } else if (detail.pressAction.id === "dismiss") {
         notifee.cancelNotification(detail.notification!.id!);
@@ -178,12 +167,12 @@ export const UpdatesProvider = ({ children }: PropsWithChildren) => {
     return notifee.onForegroundEvent((event) => {
       handleNotification(event);
     });
-  }, [isUpdated]);
+  }, []);
   useEffect(() => {
     return notifee.onBackgroundEvent(async (event) => {
       handleNotification(event);
     });
-  }, [isUpdated]);
+  }, []);
 
   // Verify if the app is updated
   useEffect(() => {
@@ -208,7 +197,6 @@ export const UpdatesProvider = ({ children }: PropsWithChildren) => {
   return (
     <UpdatesContext.Provider
       value={{
-        isUpdated,
         verifyUpdate,
       }}
     >
