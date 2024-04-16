@@ -115,7 +115,7 @@ export function Home() {
                   className={cn(
                     "rounded-lg border-2 m-1",
                     colorByProgress(habitsProgress),
-                    dayIs === "today" && " border-foreground bg-zinc-500",
+                    dayIs === "today" && "border-foreground opacity-80",
                     dayIs === "after" && "bg-zinc-600/40 border-border",
                   )}
                   onPress={() =>
