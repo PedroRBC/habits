@@ -47,7 +47,7 @@ function ToastProvider() {
   return (
     <Toast
       config={TOAST_CONFIG}
-      topOffset={insets.top + 16}
+      topOffset={insets.top + 24}
       bottomOffset={insets.bottom}
     />
   );
