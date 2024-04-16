@@ -9,7 +9,7 @@ import {
 } from "react";
 import Toast from "react-native-toast-message";
 
-import { askNotificationPermission } from "./notifications";
+import { askNotificationPermissionNotify } from "./notifications";
 
 import { mmkvStorage } from "@/lib/mmkvStorage";
 
@@ -64,25 +64,10 @@ export const SettingsProvider = ({ children }: PropsWithChildren) => {
         props: { icon: Bell },
       });
     } else {
-      const isAllowed = await askNotificationPermission();
+      const isAllowed = await askNotificationPermissionNotify();
       if (isAllowed) {
         mmkvStorage.set("notifications", true);
         setNotifications(true);
-        Toast.show({
-          type: "success",
-          text1: "Notificações.",
-          text2:
-            "As notificações estão ativadas, você receberá lembretes diários!",
-          props: { icon: Bell },
-        });
-      } else {
-        Toast.show({
-          type: "error",
-          text1: "Notificações.",
-          text2:
-            "As notificações estão desativadas, ative-as nas configurações do app para receber lembretes!",
-          props: { icon: Bell },
-        });
       }
     }
   }
