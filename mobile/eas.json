@@ -14,7 +14,10 @@
         "android": {
             "buildType": "apk"
         },
-        "credentialsSource": "local"
+        "credentialsSource": "local",
+        "cache": {
+          "disabled": false
+        }
       }
     },
     "submit": {

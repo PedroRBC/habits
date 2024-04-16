@@ -1,4 +1,6 @@
 name: Build App
+permissions:
+  contents: write
 on:
   workflow_dispatch:
     inputs:
@@ -12,15 +14,10 @@ on:
         description: Publish Release in Github
         default: false
 
-      platform:
-        type: choice
-        description: Platform to build for
-        options:
-          - android
-          - ios
       profile:
         type: choice
         description: Build profile to use
+        default: production
         options:
           - development
           - preview
