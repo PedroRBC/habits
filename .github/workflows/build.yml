@@ -2,12 +2,16 @@ name: Build App
 on:
   workflow_dispatch:
     inputs:
-      os:
-        type: choice
-        description: OS to build on. Ubuntu is faster, MacOS supports iOS builds, Windows is unsupported
-        options:
-          - macos-latest
-          - ubuntu-latest
+      version:
+        type: string
+        description: Version of release
+        default: 1.0.0
+      
+      publish:
+        type: boolean
+        description: Publish Release in Github
+        default: false
+
       platform:
         type: choice
         description: Platform to build for
@@ -23,7 +27,7 @@ on:
           - production
 jobs:
   build:
-    runs-on: ${{ github.event.inputs.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node: [18.x]
@@ -43,6 +47,16 @@ jobs:
       env:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
       run: echo $GOOGLE_SERVICES_JSON | base64 -di > ${{ github.workspace }}/android/app/google-services.json
+
+    - name: 🏗 Load Keystore file
+      env:
+        EXPO_KEYSTORE: ${{ secrets.EXPO_KEYSTORE }}
+      run: echo $EXPO_KEYSTORE | base64 -di > ${{ github.workspace }}/android/app/release.keystore
+
+    - name: 🏗 Load Credentials File
+      env:
+        EXPO_CREDENTIALS: ${{ secrets.EXPO_CREDENTIALS }}
+      run: echo $EXPO_CREDENTIALS | base64 -di > ${{ github.workspace }}/credentials.json
 
     - name: 🏗 Setup Node
       uses: actions/setup-node@v2
@@ -74,13 +88,23 @@ jobs:
       run: |
         eas build --local \
           --non-interactive \
-          --output=./app-build.apk \
-          --platform=${{ github.event.inputs.platform }} \
+          --output=./Habits-Track.apk \
+          --platform=android \
           --profile=${{ github.event.inputs.profile }}
+
+    - name: 📦 Publish app
+      if: ${{ github.event.inputs.publish }} == true
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ./Habits-Track.apk 
+        asset_name: Habits-Track-v${{ github.event.inputs.version }}.apk
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: v${{ github.event.inputs.version }}
+        release_name: Release v${{ github.event.inputs.version }}
 
     - name: 📱 Upload binary
       uses: actions/upload-artifact@v2
+      if: ${{ github.event.inputs.publish }} == false
       with:
-        name: Habits-Track-${{ github.event.inputs.platform }}.apk
-        path: ./app-build.apk
-      
+        name: Habits-Track-artifact 
+        path: ./Habits-Track.apk 
