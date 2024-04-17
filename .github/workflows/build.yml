@@ -90,7 +90,7 @@ jobs:
           --profile=${{ github.event.inputs.profile }}
 
     - name: 📦 Publish app
-      if: ${{ github.event.inputs.publish }}
+      if: ${{ github.event.inputs.publish == true }}
       uses: svenstaro/upload-release-action@v2
       with:
         file: ./Habits-Track.apk 
@@ -102,7 +102,7 @@ jobs:
 
     - name: 📱 Upload binary
       uses: actions/upload-artifact@v2
-      if: ${{ !github.event.inputs.publish }}
+      if: ${{ github.event.inputs.publish == false }}
       with:
         name: Habits-Track-artifact 
         path: ./Habits-Track.apk 
