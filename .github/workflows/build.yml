@@ -66,7 +66,12 @@ jobs:
       with:
         distribution: 'microsoft'
         java-version: '17'
-        cache: 'maven'
+        cache: 'gradle'
+        cache-dependency-path: |
+          android/*.gradle*
+          android/app/*.gradle*
+          android/gradle/wrapper/gradle-wrapper.properties
+        
 
     - name: 🏗 Setup Expo and EAS
       uses: expo/expo-github-action@v8
