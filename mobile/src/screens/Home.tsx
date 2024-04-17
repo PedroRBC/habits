@@ -74,7 +74,7 @@ export function Home() {
     >
       <Header />
       <View className="flex-1 px-6">
-        <View className="flex-row mt-6 mb-2 ">
+        <View className="flex-row mt-4 mb-2 ">
           {weekDays.map((weekDay, i) => (
             <Text
               key={`${weekDay}-${i}`}
